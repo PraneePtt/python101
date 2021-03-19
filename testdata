@@ -1,0 +1,1741 @@
+Table "doctor_clinic" {
+  "RecID" bigint(10) [pk, not null, increment]
+  "ClinicID" varchar(10) [not null]
+  "ClinicCode" varchar(50) [not null]
+  "DeptCode" varchar(50) [not null]
+  "Branch" varchar(5) [not null]
+  "ClinicNameTH" varchar(255) [default: NULL]
+  "ClinicNameEN" varchar(255) [default: NULL]
+  "Active" bit(1) [default: `b'1'`]
+  "Use_company" int(1) [not null, note: '1=เพิ่มบริษัทได้,2=เพิ่มบริษัทไม่ได้']
+  "status" int(11) [not null]
+  "detail" text [not null]
+  "status_map" int(11) [not null]
+  "clinic_room" int(11) [not null]
+
+Indexes {
+  ClinicCode [name: "ClinicCode"]
+}
+}
+
+
+Table "doctor_list" {
+  "DoctorID" varchar(35) [not null]
+  "Branch" varchar(5) [default: NULL]
+  "NameTH" varchar(200) [not null]
+  "NameEN" varchar(200) [default: NULL]
+  "ActivieOnWeb" int(1) [not null]
+  "SpecialtyID" int(10) [default: NULL]
+  "ClinicID" varchar(10) [default: NULL]
+  "DoctorCode" varchar(50) [default: NULL]
+
+Indexes {
+  DoctorCode [name: "DoctorCode"]
+}
+}
+
+Table "doctor_note" {
+  "doctorNote_id" int(11) [pk, not null, increment]
+  "DoctorID" varchar(35) [not null]
+  "memform_id" int(11) [not null]
+  "doctorNote_detail" text [not null]
+  "doctorNote_createDate" date [not null]
+  "doctorNote_open_status" int(1) [not null, note: '0=ไม่อ่าน 1=อ่าน']
+  "doctorNote_read_status" int(1) [not null, note: '0=ไม่อ่าน 1=อ่าน']
+  "doctorNote_Status" int(11) [not null, note: '1=ใช้งาน, 0=ไม่ใช้งาน,3=ลบ']
+}
+
+Table "doctor_profile" {
+  "DoctorID" int(10) [not null]
+  "Branch" varchar(5) [not null]
+  "Pic_Name" varchar(200) [default: NULL]
+  "Professional_Experience_TH" text
+  "Professional_Experience_EN" text
+  "Original_AffiliationTH" varchar(150) [default: NULL]
+  "Original_AffiliationEN" varchar(150) [default: NULL]
+}
+
+Table "doctor_specialty" {
+  "RecID" bigint(10) [pk, not null, increment]
+  "SpecialtyID" varchar(10) [not null]
+  "SpecialtyCode" varchar(10) [not null]
+  "SpecialtyNameTH" varchar(255) [default: NULL]
+  "SpecialtyNameEN" varchar(255) [default: NULL]
+  "Active" bit(1) [default: `b'1'`]
+}
+
+Table "doctor_study" {
+  "RecID" bigint(12) [pk, not null, increment]
+  "Branch" varchar(5) [not null]
+  "DoctorID" varchar(35) [not null]
+  "StartYear" varchar(4) [not null]
+  "EndYear" varchar(4) [not null]
+  "Education" varchar(75) [not null]
+  "Institution" varchar(100) [not null]
+  "Remark" text
+  "Active" int(1) [not null]
+}
+
+Table "doctor_work" {
+  "RecID" bigint(12) [pk, not null, increment]
+  "DoctorID" varchar(35) [not null]
+  "Branch" varchar(5) [not null]
+  "StartYear" varchar(4) [not null]
+  "EndYear" varchar(4) [not null]
+  "Position" varchar(75) [not null]
+  "WorkPlace" varchar(100) [not null]
+  "Remark" text
+  "Active" int(1) [not null]
+}
+
+Table "leap_article" {
+  "id" int(11) [pk, not null, increment]
+  "name_article_th" text [not null]
+  "name_article_en" text [not null]
+  "detail_th" text [not null]
+  "detail_en" text [not null]
+  "date_start" date [not null]
+  "date_end" date [not null]
+  "date_stam" datetime [not null]
+  "status" int(11) [not null, note: '0ไม่ใช้,1ใช้']
+  "type" int(11) [not null, note: '1=main,2=workshop']
+  "name_img" varchar(100) [not null]
+  "org" text [not null]
+  "size640" text [not null]
+  "size800" text [not null]
+}
+
+Table "leap_banner" {
+  "id" int(11) [pk, not null, increment]
+  "name_banner_th" text [not null]
+  "name_banner_en" text [not null]
+  "detail_th" text [not null]
+  "detail_en" text [not null]
+  "date_start" date [not null]
+  "date_end" date [not null]
+  "type" int(11) [not null]
+  "status" int(11) [not null]
+  "create_date" datetime [not null]
+  "name_img" text [not null]
+  "org" text [not null]
+  "size640" text [not null]
+  "size800" text [not null]
+}
+
+Table "leap_blood_test" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "list" text [not null]
+  "detail" text [not null]
+  "date" date [not null]
+}
+
+Table "leap_congenital_disease_phya2" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "congenital_disease" text [not null]
+}
+
+Table "leap_group_follow" {
+  "group_follow_id" int(11) [pk, not null, increment]
+  "company_group_follow_id" int(11) [not null, note: 'leap_member_attr.group_follow_id, phya2_memForm.phya2_memForm']
+  "name_no" int(11) [not null]
+  "date_start" date [not null, default: "0000-00-00"]
+  "date_end" date [not null, default: "0000-00-00"]
+  "status" int(1) [not null, note: '0:inactive, 1:active']
+  "create_date" datetime [not null, default: `CURRENT_TIMESTAMP`]
+  "update_date" datetime [not null, default: `CURRENT_TIMESTAMP`]
+
+Indexes {
+  company_group_follow_id [name: "leap_member_id"]
+}
+}
+
+Table "leap_member_attr" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [default: NULL]
+  "memform_id" int(11) [not null, note: 'phya2_memForm .memform_id']
+  "date" date [default: NULL]
+  "weakness_right" float [default: NULL, note: 'flexibility_right']
+  "weakness_left" float [default: NULL, note: 'flexibility_left']
+  "waistline" float [default: NULL]
+  "strengthening_right" float [default: NULL]
+  "strengthening_left" float [default: NULL]
+  "fat" float [default: NULL]
+  "blood_systolic" float [default: NULL]
+  "blood_diastolic" float [default: NULL]
+  "3step1minite" float [default: NULL]
+  "Remark" varchar(50) [default: NULL]
+  "mile" float [default: NULL]
+  "mileHr" int(11) [default: NULL]
+  "episode" int(11) [not null, default: "0"]
+  "status" int(11) [not null, note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+  "sum_walk" int(11) [not null, default: "0"]
+  "sum_exercise" int(11) [not null, default: "0"]
+  "sum_distance" int(11) [not null, default: "0"]
+  "sum_cal" int(11) [not null, default: "0"]
+  "sum_date" varchar(30) [not null, default: "0"]
+
+Indexes {
+  memform_id [name: "group_follow_id"]
+}
+}
+
+Table "leap_member_blood_test" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "date" date [not null]
+  "LDL" float [default: NULL]
+  "HDL" float [default: NULL]
+  "Triglyceride" float [default: NULL]
+  "FBS" float [default: NULL]
+  "Id_leap_member_attr" int(11) [not null, note: 'leap_member_attr.id']
+  "sloteTime" int(11) [not null]
+  "status_check" int(11) [not null]
+}
+
+Table "leap_member_bmi" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "id_leap_member_attr" int(11) [not null]
+  "weight" float [default: NULL]
+  "high" float [default: NULL]
+  "date" date [not null]
+  "comment" text
+  "status_check" int(11) [not null, note: '1=พยาบาลเพิ่ม,0=userเพิ่ม']
+  "episode" int(11) [not null]
+  "status" int(11) [not null, note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+}
+
+Table "leap_member_bpm" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "bpm" varchar(100) [not null]
+  "date" datetime [not null]
+}
+
+Table "leap_member_burn" {
+  "id" int(11) [not null]
+  "leap_member_id" int(11) [not null]
+  "burn" int(11) [not null]
+  "date" date [not null]
+}
+
+Table "leap_member_calories" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "calories" int(11) [not null]
+  "defaultBurn" int(11) [not null]
+  "ActivityBurn" int(11) [not null]
+  "BurnTarget" int(11) [not null]
+  "CaloriesIn" int(11) [not null]
+  "CaloriesTarget" int(11) [not null]
+  "date" date [not null]
+}
+
+Table "leap_member_eat" {
+  "memberEat_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "food_id" int(11) [not null]
+  "memberEat_calories" int(11) [not null]
+  "memberEat_unit" int(11) [not null]
+  "memberEat_date" datetime [not null]
+  "memberEat_potion" int(11) [not null, note: '1เช้า,2เที่ยง,3เย็น,4ขนม']
+  "memberEat_status" int(11) [not null, note: '1ใช้,2ไม่ใช้,3ลบ']
+}
+
+Table "leap_member_mile" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "mile" double [not null]
+  "date" date [not null]
+}
+
+Table "leap_member_sleep" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "sleep_hr" int(11) [not null]
+  "sleep_min" int(11) [not null]
+  "deep_sleep_hr" int(11) [not null]
+  "deep_sleep_min" int(11) [not null]
+  "light_sleep_hr" int(11) [not null]
+  "light_sleep_min" int(11) [not null]
+  "date" datetime [not null]
+}
+
+Table "leap_member_target" {
+  "memberTarget_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "calories_target" varchar(255) [not null]
+  "calories_target_date" datetime [not null]
+  "walk_target" varchar(255) [not null]
+  "walk_target_date" datetime [not null]
+  "weight_target" varchar(255) [not null]
+  "weight_target_date" datetime [not null]
+  "burn_target" varchar(255) [not null]
+  "burn_target_date" datetime [not null]
+}
+
+Table "leap_member_target_other" {
+  "TargetOther_id" int(11) [pk, not null, increment]
+  "memberTarget_id" int(11) [not null]
+  "TargetOther_text" varchar(255) [not null]
+}
+
+Table "leap_member_walk" {
+  "id" int(11) [pk, not null, increment]
+  "leap_member_id" int(11) [not null]
+  "walk" int(11) [not null]
+  "walking_time_hr" int(11) [not null]
+  "walking_time_min" int(11) [not null]
+  "date" datetime [not null]
+  "cal_brun" int(11) [not null]
+  "distance" float [not null]
+}
+
+Table "leap_txt_export" {
+  "ID_Txt_Export" int(150) [pk, not null, increment]
+  "ID_Member_Txt" int(11) [not null]
+  "Department" varchar(200) [not null]
+  "Txt_Pname" varchar(20) [not null]
+  "Position" varchar(150) [not null]
+  "Congenital_Disease" text [not null]
+  "Job_Description" varchar(150) [not null]
+  "Regular_Medication" text [not null]
+  "Drug_Name" text [not null]
+  "Exercise" varchar(150) [not null]
+  "Exercise_Time" int(11) [not null]
+  "Consumption_F_And_V" float [not null]
+  "Txt_Smoke" varchar(100) [not null]
+  "Txt_Alcohol" varchar(100) [not null]
+}
+
+Table "log_web_api" {
+  "log_id" int(11) [pk, not null, increment]
+  "log_ip" varchar(255) [not null]
+  "log_user_id" varchar(255) [not null]
+  "log_url" varchar(500) [not null]
+  "log_send" text [not null]
+  "log_return" text [not null]
+  "log_create_date" date [not null]
+  "log_type" int(11) [not null, note: '1=app,2=web']
+}
+
+Table "phya2_alert" {
+  "alert_id" int(11) [pk, not null, increment]
+  "alert_url" varchar(255) [not null]
+  "alert_detail" text [not null]
+  "alert_detail_en" text [not null]
+  "alert_confirm" tinyint(1) [not null]
+  "alert_type" varchar(1) [not null, note: '1: Toast, 2 : popup']
+  "alert_exitApp" tinyint(1) [not null]
+  "alert_status" tinyint(1) [not null]
+}
+
+Table "phya2_alertimg" {
+  "alertimg_id" int(11) [pk, not null, increment]
+  "alertimg_path" varchar(255) [not null]
+  "alertimg_size" varchar(100) [not null]
+  "alertimg_status" int(11) [not null, note: '1 =ใช้งาน , 2 = ไม่ใช้งาน']
+  "alertimg_create" timestamp [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_amphur" {
+  "amphur_id" int(5) [pk, not null, increment]
+  "amphur_code" varchar(4) [not null]
+  "amphur_name_th" varchar(150) [not null]
+  "amphur_name_eng" varchar(150) [not null]
+  "prov_id" int(5) [not null, default: "0"]
+}
+
+Table "phya2_app_version" {
+  "ver_id" int(11) [pk, not null, increment]
+  "ver_bundle" varchar(255) [default: NULL]
+  "ver_number" varchar(255) [default: NULL]
+  "ver_up_dateversion" int(11) [not null]
+  "ver_type" varchar(255) [default: NULL, note: '1=android,2=ios']
+}
+
+
+Table "phya2_booking" {
+  "book_id" int(11) [not null, increment]
+  "book_status_member" int(11) [default: NULL, note: '1=นัดให้ตัวเอง , 2=นัดให้ผู้อื่น']
+  "book_type_doctor" int(11) [not null, note: '1=ระบุแพทย์,2=ไม่ระบุแพทย์']
+  "member_id" int(11) [not null]
+  "cli_id" varchar(35) [not null]
+  "book_doc_id" varchar(255) [default: NULL]
+  "book_doc_name" varchar(255) [default: NULL]
+  "book_appointment_no" varchar(255) [not null]
+  "contact_status" int(11) [default: NULL, note: '1=มีผู้ติดต่อ , 2= ไม่มีผู้ติดต่อ']
+  "contact_fname" varchar(255) [default: NULL]
+  "contact_lname" varchar(255) [default: NULL]
+  "contact_phone" varchar(255) [default: NULL]
+  "book_note" varchar(255) [default: NULL]
+  "book_status" int(11) [default: NULL, note: '1=ดำเนินการ,2=นัดแล้ว,3=ยกเลิก,4=เลื่อน,5=เลื่อนโดยแอดมิน,6=ยกเลิกโดยแอดมิน']
+  "book_why" varchar(255) [not null]
+  "book_create" timestamp [not null]
+  "book_company_name" text [not null]
+  "company_id" int(11) [not null]
+  "contact_id" int(11) [not null, default: "0", note: 'id คนที่ add คนอื่น']
+  "packageComSave_id" int(11) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  member_id [name: "fk_Booking_Member1_idx"]
+  cli_id [name: "fk_Booking_Clinic1_idx"]
+  contact_id [name: "contact_id"]
+  book_doc_id [name: "book_doc_id"]
+  cli_id [name: "cli_id"]
+  company_id [name: "company_id"]
+  book_id [name: "book_id"]
+  member_id [name: "member_id"]
+  pb_id [name: "pd_id"]
+  (book_id, member_id, cli_id) [pk]
+}
+}
+
+Table "phya2_booking_date" {
+  "bookd_id" int(11) [not null, increment]
+  "bookd_position" int(11) [default: NULL]
+  "bookd_datetime" datetime [default: NULL]
+  "bookd_datetime_confirm" int(11) [default: NULL]
+  "book_id" int(11) [not null]
+  "q_id" int(11) [not null]
+
+Indexes {
+  book_id [name: "fk_Booking_date_Booking1_idx"]
+  q_id [name: "fk_Booking_date_Status_Q1_idx"]
+  book_id [name: "book_id"]
+  (bookd_id, book_id, q_id) [pk]
+}
+}
+
+Table "phya2_booking_emergency" {
+  "booke_id" int(11) [not null, increment]
+  "booke_name" varchar(255) [default: NULL]
+  "book_id" int(11) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  book_id [name: "fk_Booking_Emergency_Booking1_idx"]
+  pb_id [name: "pd_id"]
+  (booke_id, book_id) [pk]
+}
+}
+
+Table "phya2_category_health_articles" {
+  "ID" int(11) [pk, not null, increment]
+  "Name_Category_EN" varchar(100) [not null]
+  "Name_Category_TH" varchar(50) [not null]
+  "Status" int(11) [not null, note: '0= no,1= yes,3=delete']
+}
+
+Table "phya2_checklist" {
+  "checklist_id" int(11) [pk, not null, increment]
+  "checklist_name" varchar(255) [not null]
+}
+
+Table "phya2_checklist_sub" {
+  "checklist_sub_id" int(11) [pk, not null, increment]
+  "checklist_sub_key" varchar(50) [not null]
+  "checklist_sub_name" varchar(255) [not null]
+  "checklist_id" int(11) [not null]
+
+Indexes {
+  checklist_id [name: "checklist_id"]
+}
+}
+
+Table "phya2_clinic_call" {
+  "call_id" int(9) [pk, not null, increment]
+  "RecID" varchar(255) [not null]
+  "call_phone" varchar(255) [not null]
+
+Indexes {
+  RecID [name: "RecID"]
+}
+}
+
+Table "phya2_company" {
+  "company_id" int(10) [pk, not null, increment]
+  "company_code" varchar(40) [not null]
+  "company_name" varchar(500) [not null]
+  "company_active" int(1) [not null, note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+  "company_create_by" int(10) [not null]
+  "company_create_date" datetime [not null]
+  "company_update_by" int(10) [not null]
+  "company_update_date" datetime [not null]
+  "tel" varchar(20) [not null]
+  "status_follow_up" int(11) [not null, note: '1=ใช้งาน, 0=ไม่ใช้งาน']
+  "status_contract_company" int(1) [not null, default: "0", note: '0:inactive,1:active  บริษัทคู่สัญญา']
+}
+
+Table "phya2_company_member" {
+  "companyMember_id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "member_hn" varchar(255) [default: NULL]
+  "company_id" int(11) [not null]
+  "Patient_Type" varchar(20) [not null]
+  "Right_Code" varchar(20) [not null]
+  "Sposor" varchar(20) [not null]
+  "Sposor_name" varchar(100) [default: NULL]
+  "facCode" text [not null]
+  "package_supplement" text [not null]
+  "package_quota" text [not null]
+  "package_quota_unlimite" text [not null]
+  "package_provide" text [not null]
+  "package_qty" varchar(5) [not null]
+  "price_limite" float [not null]
+  "startdate" date [not null, default: "0000-00-00"]
+  "enddate" date [not null, default: "0000-00-00"]
+  "status_package" int(11) [not null, default: "1", note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+  "stampDate" datetime [not null]
+}
+
+Table "phya2_company_package" {
+  "company_package_id" int(11) [pk, not null, increment]
+  "company_id" int(11) [not null]
+  "company_code" varchar(50) [not null]
+  "company_name" varchar(100) [not null]
+  "option_package" varchar(50) [not null]
+  "startdate" date [not null, default: "0000-00-00"]
+  "enddate" date [not null, default: "0000-00-00"]
+  "status" int(11) [not null, note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+}
+
+Table "phya2_contact" {
+  "contact_id" int(11) [pk, not null, increment]
+  "address_th" text [note: 'ที่อยู่']
+  "address_en" varchar(255) [default: NULL, note: 'ที่อยู่ภาษาอังกฤษ']
+  "working_day_th" varchar(255) [default: NULL, note: 'วันที่ทำการ']
+  "working_day_en" varchar(255) [default: NULL, note: 'วันทำงาน ภาษาอังกฤษ']
+  "map" text
+  "tel" varchar(20) [default: NULL, note: 'เบอร์โทรศัพ']
+  "status" int(1) [not null, default: "0", note: '0:inactive , 1: active']
+  "create_date" datetime [not null, default: `CURRENT_TIMESTAMP`]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pb_id"]
+}
+}
+
+Table "phya2_device_regis" {
+  "phya2_device_regis_id" int(11) [pk, not null, increment]
+  "phya2_device_uuid" varchar(255) [not null]
+  "phya2_device_uuid_logout" text [not null, note: 'token เก่าสำหรับคนที่ logout']
+  "member_id" int(11) [not null]
+  "phya2_device_platform" int(1) [not null, note: '1=android,2=ios']
+  "phya2_device_registerDt" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  "phya2_device_visitedDt" datetime [not null]
+  "phya2_device_login_status" int(1) [not null, note: '1=ใช้งาน,2=ไม่ใช้งาน']
+
+Indexes {
+  member_id [name: "member_id"]
+}
+}
+
+Table "phya2_district" {
+  "dist_id" int(11) [pk, not null, increment]
+  "dist_code" varchar(20) [default: NULL]
+  "dist_name_th" varchar(255) [default: NULL]
+  "dist_name_eng" varchar(255) [not null]
+  "amphur_id" int(11) [not null]
+
+Indexes {
+  amphur_id [name: "amphur_id"]
+}
+}
+
+Table "phya2_doctors_exclude" {
+  "doc_id" int(11) [pk, not null, increment]
+  "doc_id_code" varchar(255) [default: NULL]
+  "doc_name" varchar(255) [default: NULL]
+  "doc_status" int(11) [default: NULL, note: '1=ใช้งาน,2=ไม่ใช้งาน']
+  "doc_create_by" int(11) [default: NULL]
+  "doc_create_date" datetime [default: NULL]
+
+Indexes {
+  doc_id_code [name: "doc_id_code"]
+}
+}
+
+Table "phya2_doctor_favorite" {
+  "docf_id" int(11) [not null, increment]
+  "docf_id_real" varchar(255) [default: NULL]
+  "member_id" int(11) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  member_id [name: "fk_Doctor_Favorite_Member1_idx"]
+  docf_id_real [name: "docf_id_real"]
+  pb_id [name: "pd_id"]
+  (docf_id, member_id) [pk]
+}
+}
+
+Table "phya2_experiment" {
+  "experiment_date" date [not null]
+}
+
+Table "phya2_food" {
+  "id" int(11) [pk, not null, increment]
+  "name" varchar(90) [not null]
+  "name_en" varchar(90) [default: NULL]
+  "calories" int(11) [not null]
+  "volume" int(11) [not null]
+  "unit" varchar(30) [not null]
+  "unit_en" varchar(30) [default: NULL]
+  "date" datetime [not null]
+  "status" int(11) [not null, note: '1ใช้,2ไม่ใช้,3ลบ']
+  "id_member" int(11) [not null]
+
+Indexes {
+  name [name: "name"]
+}
+}
+
+Table "phya2_group" {
+  "group_id" int(11) [pk, not null, increment]
+  "group_name" varchar(255) [default: NULL]
+  "group_status" int(1) [not null, note: '1=ใช้งาน,2=ไม่ใช้งาน']
+  "group_update_by" int(9) [not null]
+  "group_update_time" datetime [not null]
+  "group_crate" datetime [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_group_permission" {
+  "permis_id" int(11) [not null, increment]
+  "group_id" int(11) [not null]
+  "page_id" int(11) [not null]
+  "permis_create_date" datetime [default: NULL]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  group_id [name: "fk_Group_Permission_Group1_idx"]
+  page_id [name: "fk_Group_Permission_Page1_idx"]
+  pb_id [name: "pd_id"]
+  (permis_id, group_id, page_id) [pk]
+}
+}
+
+Table "phya2_group_per_clinic" {
+  "perc_id" int(11) [not null, increment]
+  "group_id" int(11) [not null]
+  "cli_id" int(11) [not null, note: 'cli_id = RecID']
+  "perc_create_date" datetime [default: NULL]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  group_id [name: "fk_Group_Permission_Group1_idx"]
+  cli_id [name: "fk_Group_Permission_Page1_idx"]
+  pb_id [name: "pd_id"]
+  (perc_id, group_id, cli_id) [pk]
+}
+}
+
+Table "phya2_head_hint" {
+  "id" int(11) [pk, not null, increment]
+  "name_th" varchar(50) [not null]
+  "name_en" varchar(50) [not null]
+  "status" int(11) [not null]
+}
+
+Table "phya2_head_page" {
+  "head_id" int(11) [pk, not null, increment]
+  "head_name" varchar(255) [default: NULL]
+}
+
+Table "phya2_health_articles" {
+  "id" int(11) [pk, not null, increment]
+  "category_health_articles_id" int(11) [not null]
+  "name_health_articles_th" text [not null]
+  "name_health_articles_en" text [not null]
+  "detail_health_articles_th" text [not null]
+  "detail_health_articles_en" text [not null]
+  "date_start" date [not null]
+  "date_end" date [not null]
+  "date_stam" datetime [not null]
+  "path" text [not null]
+  "type" int(11) [not null]
+  "status" int(11) [not null, note: '0=ไม่ใช้,1=ใช้,3=ลบ']
+  "url" text [not null]
+  "name_img" varchar(100) [not null]
+  "org" varchar(100) [not null]
+  "size640" varchar(100) [not null]
+  "size800" varchar(100) [not null]
+  "view" int(11) [not null]
+}
+
+Table "phya2_hint" {
+  "id" int(11) [pk, not null, increment]
+  "id_head_hint" int(11) [not null]
+  "hint_th" text [not null]
+  "hint_en" text [not null]
+  "date_start" date [not null]
+  "date_end" date [not null]
+  "date_stam" datetime [not null]
+  "status" int(11) [not null, note: '0ไม่ใช่,1ใช่,3ลบ']
+  "name_img" varchar(50) [not null]
+  "org" text [not null]
+  "size640" text [not null]
+  "size800" text [not null]
+}
+
+Table "phya2_line_id" {
+  "id" int(11) [pk, not null, increment]
+  "line_id" varchar(255) [not null]
+  "status" int(1) [default: "1", note: '0 :inactive , 1 ;active']
+  "create_date" datetime [default: `CURRENT_TIMESTAMP`]
+}
+
+Table "phya2_log" {
+  "log_id" int(11) [pk, not null, increment]
+  "log_ip" varchar(255) [default: NULL]
+  "log_user_id" varchar(255) [default: NULL]
+  "log_ref" text
+  "log_type" int(11) [default: NULL, note: '1=ล็อกอิน,2=เปลี่ยนรหัสผ่าน,3=เพิ่มข้อมูล,4=แก้ไขข้อมูล,5=ลบข้อมูล,6=noti']
+  "log_process" int(9) [not null, note: '1=ผ่าน,2=ไม่ผ่าน (type6 1=ios,2=android)']
+  "log_create_date" datetime [default: NULL]
+}
+
+Table "phya2_log_api_default" {
+  "log_id" int(11) [pk, not null, increment]
+  "log_ip" varchar(255) [default: NULL]
+  "log_user_id" varchar(255) [default: NULL]
+  "log_url" varchar(500) [not null]
+  "log_send" text
+  "log_return" text
+  "log_create_date" datetime [default: NULL]
+  "log_type" int(1) [not null, note: '1=app,2=web']
+}
+
+Table "phya2_member" {
+  "member_id" int(11) [not null, increment]
+  "conpany_id" varchar(20) [default: NULL]
+  "title_name" varchar(10) [not null]
+  "member_fname" varchar(255) [default: NULL]
+  "member_lname" varchar(255) [default: NULL]
+  "member_cid" varchar(50) [default: NULL]
+  "member_sex" int(11) [default: NULL, note: '1=men,2=women']
+  "member_hn" varchar(255) [default: NULL]
+  "member_birthday" date [default: NULL]
+  "member_phone" varchar(255) [default: NULL]
+  "member_address" varchar(255) [default: NULL]
+  "postcode_id" int(11) [not null]
+  "dist_id" int(11) [not null]
+  "amphr_id" int(11) [not null]
+  "prov_id" int(11) [not null]
+  "member_img" varchar(255) [default: NULL]
+  "member_email" varchar(255) [default: NULL]
+  "member_password" varchar(255) [default: NULL]
+  "member_checkupstatus" int(11) [default: NULL]
+  "member_api_key" varchar(255) [default: NULL]
+  "member_facebook_id" varchar(255) [default: NULL]
+  "member_facebook_name" varchar(255) [default: NULL]
+  "member_type" int(11) [default: NULL, note: '1=email,2=facebook,3=orther']
+  "member_lang" int(11) [default: NULL]
+  "member_noti" int(11) [default: NULL, note: '1=รับ,2=ไม่รับ']
+  "member_condition" varchar(255) [default: NULL]
+  "member_create_date" datetime [default: NULL]
+  "member_status" int(11) [default: NULL, note: '1=ใช้งาน,2=ไม่ใช้งาน,3=ลบ']
+  "member_token" varchar(255) [default: NULL]
+  "member_reset_pass" varchar(255) [default: NULL]
+  "member_book_status" int(11) [default: NULL, note: '1=member,2=booking']
+  "member_update_by" int(9) [not null]
+  "member_update_time" datetime [not null]
+  "member_last_datetime_update_hn" datetime [not null]
+  "drunk" int(11) [not null, note: '1= ดื่ม,0 = ไม่ดื่ม']
+  "smoke" int(11) [not null, note: '1=smoke,0=no smoke']
+  "plan_child" int(11) [not null, note: '1=วางแผ่น,0=ไม่วางแผ่น']
+  "plan_marry" int(11) [not null, note: '1=plan_marry,0=no_plan_marry']
+  "Status_Health_Up" int(11) [not null, note: '1=เข้าร่วม, 0=ไม่เข้าร่วม']
+  "flag" int(2) [default: "0", note: '1:ซ้ำได้,0:ห้ามซ้ำ']
+
+Indexes {
+  postcode_id [name: "fk_Member_Postcode1_idx"]
+  dist_id [name: "fk_Member_District1_idx"]
+  amphr_id [name: "fk_Member_Amphur1_idx"]
+  prov_id [name: "fk_Member_Province1_idx"]
+  member_cid [name: "member_cid"]
+  conpany_id [name: "conpany_id"]
+  (member_id, postcode_id, dist_id, amphr_id, prov_id) [pk]
+}
+}
+
+Table "phya2_member_checkupfile" {
+  "memberCP_file_id" int(11) [not null, increment]
+  "member_id" int(11) [not null]
+  "memberCP_file_year" varchar(100) [not null]
+  "memberCP_file_name" varchar(100) [not null]
+  "memberCP_file_status" int(11) [not null, note: '0=ไม่ใช่ 1=ใช้ 3=ลบ']
+  "memberCP_file_date" datetime [not null]
+  "memberCP_file_path" varchar(500) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  memberCP_file_id [unique, name: "memberCP_file_id_3"]
+  memberCP_file_id [name: "memberCP_file_id"]
+  memberCP_file_id [name: "memberCP_file_id_2"]
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_member_hn" {
+  "memhn_id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "pb_id" int(11) [not null]
+  "member_hn" varchar(100) [not null]
+  "memhn_status" int(5) [not null, note: '0=รอง 1=หลัก']
+  "member_checkupstatus" int(2) [not null]
+  "member_condition" int(2) [not null]
+  "memhn_date" datetime [not null]
+}
+
+Table "phya2_member_log" {
+  "id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "conpany_id" varchar(20) [default: NULL]
+  "title_name" varchar(10) [not null]
+  "member_fname" varchar(255) [default: NULL]
+  "member_lname" varchar(255) [default: NULL]
+  "member_cid" varchar(50) [default: NULL]
+  "member_sex" int(11) [default: NULL, note: '1=men,2=women']
+  "member_hn" varchar(255) [default: NULL]
+  "member_birthday" date [default: NULL]
+  "member_phone" varchar(255) [default: NULL]
+  "member_address" varchar(255) [default: NULL]
+  "postcode_id" int(11) [not null]
+  "dist_id" int(11) [not null]
+  "amphr_id" int(11) [not null]
+  "prov_id" int(11) [not null]
+  "member_img" varchar(255) [default: NULL]
+  "member_email" varchar(255) [default: NULL]
+  "member_password" varchar(255) [default: NULL]
+  "member_checkupstatus" int(11) [default: NULL]
+  "member_api_key" varchar(255) [default: NULL]
+  "member_facebook_id" varchar(255) [default: NULL]
+  "member_facebook_name" varchar(255) [default: NULL]
+  "member_type" int(11) [default: NULL, note: '1=email,2=facebook,3=orther']
+  "member_lang" int(11) [default: NULL]
+  "member_noti" int(11) [default: NULL, note: '1=รับ,2=ไม่รับ']
+  "member_condition" varchar(255) [default: NULL]
+  "member_create_date" datetime [default: NULL]
+  "member_status" int(11) [default: NULL, note: '1=ใช้งาน,2=ไม่ใช้งาน,3=ลบ']
+  "member_token" varchar(255) [default: NULL]
+  "member_reset_pass" varchar(255) [default: NULL]
+  "member_book_status" int(11) [default: NULL, note: '1=member,2=booking']
+  "member_update_by" int(9) [not null]
+  "member_update_time" datetime [not null]
+  "member_last_datetime_update_hn" datetime [not null]
+  "drunk" int(11) [not null, note: '1= ดื่ม,0 = ไม่ดื่ม']
+  "smoke" int(11) [not null, note: '1=smoke,0=no smoke']
+  "plan_child" int(11) [not null, note: '1=วางแผ่น,0=ไม่วางแผ่น']
+  "plan_marry" int(11) [not null, note: '1=plan_marry,0=no_plan_marry']
+  "Status_Health_Up" int(11) [not null, note: '1=เข้าร่วม, 0=ไม่เข้าร่วม']
+  "flag" int(2) [default: "0", note: '1:ซ้ำได้,0:ห้ามซ้ำ']
+}
+
+Table "phya2_memForm" {
+  "memform_id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "conpany_id" varchar(20) [default: "0"]
+  "group_follow_id" int(11) [not null]
+  "memform_sex" tinyint(1) [not null, note: '1=ชาย, 2=หญิง']
+  "memform_age" varchar(10) [not null]
+  "memform_height" varchar(10) [not null]
+  "memform_weight" varchar(10) [not null]
+  "smoking_id" int(11) [not null]
+  "drinking_id" int(11) [not null]
+  "memform_weddingPlanning" tinyint(1) [not null, note: ' 1=ใช่,2=ไม่ใช่']
+  "memform_babyPlanning" tinyint(1) [not null, note: ' 1=ใช่,2=ไม่ใช่']
+  "memFom_Job_Description" varchar(50) [not null, note: 'ลักษณะงาน']
+  "menFom_Congenital_Disease" text [not null, note: 'โรคประจำตัว']
+  "memfom_Department" text [not null, note: 'แผนก']
+  "memFom_Position" text [not null, note: 'ตำแหน่ง']
+  "memfom_Regular_Medication" text [not null, note: 'ยาที่ใช้ประจำ']
+  "memFom_Drug_Name" text [not null, note: 'ชื่อยา']
+  "memfom_Exercise" text [not null, note: 'การออกกำลังกาย']
+  "memfom_Exercise_Time" text [not null, note: 'เวลาการออกกำลังกาย']
+  "memfom_Consumption_F_And_V" float [not null, note: 'การบริโภคผักผลไม้']
+  "member_statusHUP" int(2) [not null, note: '0=เข้าร่วมแล้ว,1ชยังไม่เข้าร่วม']
+  "memFom_title" varchar(20) [not null]
+  "memFom_IDEmp" varchar(20) [not null]
+}
+
+Table "phya2_memForm_disease" {
+  "disease_id" int(11) [pk, not null, increment]
+  "disease_name_th" varchar(255) [not null]
+  "disease_name_en" varchar(255) [not null]
+}
+
+Table "phya2_memForm_diseaseFamily" {
+  "diseaseFamily_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "disease_id" int(11) [not null]
+}
+
+Table "phya2_memForm_diseaseSelf" {
+  "diseaseSelf_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "disease_id" int(11) [not null]
+}
+
+Table "phya2_memForm_drinking" {
+  "drinking_id" int(11) [pk, not null, increment]
+  "drinking_name_th" varchar(255) [not null]
+  "drinking_name_en" varchar(255) [not null]
+
+Indexes {
+  drinking_name_th [name: "drinking_name_th"]
+}
+}
+
+Table "phya2_memForm_HealthResultsSelf" {
+  "HealthResultsSelf_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "HealthResultsSelf_text" varchar(255) [not null]
+}
+
+Table "phya2_memForm_medicine" {
+  "medicine_id" int(11) [pk, not null, increment]
+  "medicine_name_th" varchar(255) [not null]
+  "medicine_name_en" varchar(255) [not null]
+}
+
+Table "phya2_memForm_medicineSelf" {
+  "medicineSelf_id" int(11) [pk, not null, increment]
+  "memform_id" int(11) [not null]
+  "medicine_text" varchar(255) [not null]
+}
+
+Table "phya2_memForm_package" {
+  "mem_package_id" int(11) [pk, not null, increment]
+  "member_hn" varchar(20) [not null]
+  "standard_package" varchar(20) [not null]
+  "financial_amount" int(11) [not null]
+  "startdate" date [not null]
+  "enddate" date [not null]
+}
+
+Table "phya2_memForm_smoking" {
+  "smoking_id" int(11) [pk, not null, increment]
+  "smoking_name_th" varchar(255) [not null]
+  "smoking_name_en" varchar(255) [not null]
+}
+
+Table "phya2_noti" {
+  "noti_id" int(11) [not null, increment]
+  "book_id" int(11) [not null]
+  "member_hn" varchar(255) [not null]
+  "queue_clinic_id" int(11) [not null]
+  "queue_clinic_name" varchar(100) [not null]
+  "noti_text" varchar(255) [default: NULL]
+  "noti_text_en" text [not null]
+  "noti_open_status" int(11) [not null, note: ' 1=Not open,2=open ']
+  "noti_open_date" datetime [not null]
+  "noti_read_status" int(11) [not null, note: ' 1=not read,2=read ']
+  "noti_read_date" datetime [not null]
+  "noti_type_page" int(11) [not null, note: '1 = การนัดหมาย , 2 = ผลตรวจ , 3 = แจ้งเตือนคิว , 4 = แจ้งเตือนอาหาร , , 5= ชำระเงินค่าแพ็กเก็ต']
+  "noti_queue" varchar(10) [not null]
+  "noti_sub_title" int(11) [not null, note: '1=นัด,2=ยกเลิก,3=เลื่อน,4=เปลี่ยนคลินิก,5=แจ้งผลตรวจสุขภาพ, 6 = แจ้งเตือนคิว , 7 = แจ้งเตือนอาหาร,8=แจ้งเตือนซื้อแพ็กเกต']
+  "noti_create_date" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  "noti_type" int(11) [not null, note: '1=App,2=web']
+  "noti_who_admin" int(9) [not null, note: 'ไอดีว่าใครเป็นคนกด']
+  "noti_to_admin" int(9) [not null, note: 'แจ้งเตือนให้ไอดีนี้']
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  book_id [name: "fk_Noti_Booking1_idx"]
+  noti_id [name: "noti_id"]
+  book_id [name: "book_id"]
+  queue_clinic_id [name: "queue_clinic_id"]
+  pb_id [name: "pd_id"]
+  (noti_id, book_id) [pk]
+}
+}
+
+Table "phya2_otp" {
+  "otp_id" int(11) [pk, not null, increment]
+  "otp_gen" varchar(255) [not null]
+  "otp_ref" varchar(255) [not null]
+  "otp_status" int(11) [not null, default: "1", note: '1=ใช้งาน , 2=ไม่ใช้']
+  "otp_create" datetime [not null, default: `CURRENT_TIMESTAMP`]
+  "member_id" int(11) [not null]
+
+Indexes {
+  member_id [name: "member_id"]
+}
+}
+
+Table "phya2_package" {
+  "id" int(11) [pk, not null, increment]
+  "id_package" varchar(20) [not null]
+  "clinice_id" int(11) [not null]
+  "package_code" varchar(50) [not null]
+  "package_th" varchar(255) [not null]
+  "package_en" varchar(255) [not null]
+  "package_th_real" varchar(255) [default: NULL, note: 'ชื่อ จริงจาก api']
+  "price" int(11) [not null]
+  "date_create" datetime [not null]
+  "date_start" datetime [not null]
+  "date_end" datetime [not null]
+  "status" int(11) [not null, note: '2ไม่ใช้ม1ใช้,3ลบ']
+  "sex" int(11) [not null, note: '0=ไม่แยกเพศ,1=ชาย,2=หญิง']
+  "condition_th" text [not null]
+  "condition_en" text [not null]
+  "type" tinyint(1) [not null, note: '1=แพ็คของ phya 2=แพ็คของ bbs']
+  "name_img" varchar(100) [not null]
+  "org" text [not null]
+  "size640" text [not null]
+  "size800" text [not null]
+  "plan_child" int(11) [not null, note: '0=ทั้งหมด,1=วางแผนมีลูก,2=ไม่วางแผนมีลูก']
+  "plan_marry" int(11) [not null, note: '0=ทั้งหมด,1=วางแผนแต่งงาน,2=ไม่วางแผนแต่งงาน']
+  "title_th" text [not null]
+  "sdetail_th" text [not null]
+  "detail_th" text [not null]
+  "remark_th" text [not null]
+  "gender" int(1) [default: "0", note: '0 : ทั้งหมด  , 1 : ชาย ,2 : หญิง']
+  "parent_id" int(11) [default: "0", note: 'id ตัวหลัก']
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pb_id"]
+}
+}
+
+Table "phya2_package_attr" {
+  "packageAttr_id" int(11) [pk, not null, increment]
+  "packageAttr_code" varchar(50) [not null]
+  "packageAttr_detail" varchar(255) [not null]
+  "packageAttr_detail_en" varchar(100) [default: NULL]
+  "packageAttr_des" varchar(255) [not null]
+  "packageAttr_price" int(11) [not null]
+  "sort" int(11) [default: "9999"]
+  "packageAttr_Status" int(11) [not null, note: '1=ใช้งาน, 2=ไม่ใช้งาน,3=ลบ']
+}
+
+Table "phya2_package_attr_join" {
+  "packageAttrJoin_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "packageAttr_id" int(11) [not null]
+}
+
+Table "phya2_package_checkcode" {
+  "package_code_id" int(11) [pk, not null, increment]
+  "code" varchar(20) [not null]
+  "name_en" text [not null]
+  "name_th" text [not null]
+  "group_type" varchar(20) [not null]
+  "status" int(11) [not null, note: '0= Disable,1= Enable,3=delete']
+  "show_in_quotation" int(11) [not null, note: '0= no,1= yes']
+}
+
+Table "phya2_package_checkcode_join" {
+  "id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "package_code_id" int(11) [not null]
+}
+
+Table "phya2_package_company" {
+  "packageCompany_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "company_id" int(11) [not null]
+}
+
+Table "phya2_package_companyAttr_save" {
+  "packageComAttrSave_id" int(11) [pk, not null, increment]
+  "packageComSave_id" int(11) [not null]
+  "facCode" varchar(255) [not null]
+  "labCode" varchar(255) [not null]
+  "facType" int(11) [not null, note: '1=more, 2=quota, 3=provide, 4=unlimite']
+  "packageComAttrSave_status" int(11) [not null, note: '1=ใช้งาน, 0=ไม่ใช้งาน,3=ลบ']
+}
+
+Table "phya2_package_company_save" {
+  "packageComSave_id" int(11) [pk, not null, increment]
+  "companyMember_id" int(11) [not null]
+  "member_id" int(11) [not null]
+  "packageComSave_unit" int(5) [not null]
+  "packageComSave_discount" int(10) [not null]
+  "packageComSave_price" int(10) [not null]
+  "packageComSave_status" int(2) [not null, note: '0=ไม่ใช่ 1=ใช้ 3=ลบ']
+  "packageComSave_Datetime" datetime [not null]
+}
+
+Table "phya2_package_criteria" {
+  "crite_id" int(11) [pk, not null, increment]
+  "criteria_id" int(11) [not null]
+  "criteria_detail" varchar(20) [not null]
+}
+
+Table "phya2_package_to_age" {
+  "packageAge_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "criteria_id" int(11) [not null]
+
+Indexes {
+  package_id [name: "package_id"]
+}
+}
+
+Table "phya2_package_to_disease" {
+  "packageDisease_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "disease_id" int(11) [not null]
+
+Indexes {
+  package_id [name: "package_id"]
+}
+}
+
+Table "phya2_package_to_drink" {
+  "packageDrink_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "drink_id" int(11) [not null]
+
+Indexes {
+  package_id [name: "package_id"]
+}
+}
+
+Table "phya2_package_to_family_disease" {
+  "packageFamDis_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "family_disease_id" int(11) [not null]
+
+Indexes {
+  package_id [name: "package_id"]
+}
+}
+
+Table "phya2_package_to_smoke" {
+  "packageSmoke_id" int(11) [pk, not null, increment]
+  "package_id" int(11) [not null]
+  "smoke_id" int(11) [not null]
+
+Indexes {
+  package_id [name: "package_id"]
+}
+}
+
+Table "phya2_page" {
+  "page_id" int(11) [not null, increment]
+  "page_name" varchar(45) [default: NULL]
+  "page_code" varchar(255) [not null]
+  "page_permission" varchar(45) [default: NULL, note: '1=read,2=write']
+  "head_id" int(11) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  head_id [name: "fk_Page_Head_Page1_idx"]
+  pb_id [name: "pd_id"]
+  (page_id, head_id) [pk]
+}
+}
+
+Table "phya2_payment" {
+  "id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "memform_id" int(11) [not null]
+  "package_id" int(11) [not null]
+  "price" int(11) [not null]
+  "date_order" datetime [not null]
+  "date_payment" datetime [not null]
+  "status" int(11) [not null, note: '1=กำลังชำระเงิน,2=ชำระเงินไม่สำเร็จ,3=ชำระเงินสำเร็จ,4=voidเงินคืน']
+  "product" varchar(250) [not null]
+  "id_order" varchar(100) [not null]
+  "id_payment" varchar(100) [not null]
+  "payment_method" varchar(100) [not null]
+  "card_no" varchar(100) [not null]
+  "card_type" varchar(100) [not null]
+}
+
+Table "phya2_postcode" {
+  "postcode_id" int(11) [pk, not null, increment]
+  "postcode_code" varchar(100) [not null]
+  "dist_id" int(11) [not null]
+  "postcode_name" varchar(5) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  dist_id [name: "dist_id"]
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_province" {
+  "prov_id" int(5) [pk, not null, increment]
+  "prov_name_th" varchar(150) [not null]
+  "prov_name_eng" varchar(150) [not null]
+  "phya2_province_rank" int(11) [not null]
+}
+
+Table "phya2_question" {
+  "question_id" int(11) [pk, not null, increment]
+  "question_detail_th" varchar(255) [not null]
+  "question_detail_en" varchar(255) [not null]
+  "question_order" int(11) [not null]
+  "question_type" tinyint(2) [not null, note: '1=ปวดคอ,2=ปวดหลัง']
+}
+
+Table "phya2_question_answer" {
+  "answer_id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "question_id" int(11) [not null]
+  "choices_id" int(11) [not null]
+  "bookings_id" int(11) [not null]
+  "choices_date" datetime [not null]
+
+Indexes {
+  member_id [name: "member_id"]
+  question_id [name: "question_id"]
+  bookings_id [name: "bookings_id"]
+}
+}
+
+Table "phya2_question_choices" {
+  "choices_id" int(11) [pk, not null, increment]
+  "question_id" int(11) [not null]
+  "choices_detail_th" varchar(255) [not null]
+  "choices_detail_en" varchar(255) [not null]
+  "choices_score" int(5) [not null]
+  "choices_detail_order" int(11) [not null]
+}
+
+Table "phya2_question_Physical_Therapist" {
+  "Physical_Therapist_ID" int(11) [pk, not null, increment]
+  "Physical_Therapist_Text" text [not null]
+  "Physical_Therapist_Type" int(11) [not null, note: '1=ปวดคอ,2=ปวดหลัง']
+  "bookings_id" int(11) [not null]
+}
+
+Table "phya2_question_Physical_Therapist_sub" {
+  "Physical_Therapist_sub_ID" int(11) [pk, not null, increment]
+  "Physical_Therapist_Text_sub" text [not null]
+  "Physical_Therapist_Type_sub" int(11) [not null, note: '1=ปวดคอ,2=ปวดหลัง']
+  "bookings_id" int(11) [not null]
+}
+
+Table "phya2_queue" {
+  "queue_id" int(11) [pk, not null, increment]
+  "queue_room" varchar(50) [not null]
+  "queue_hn" varchar(30) [not null]
+  "queue_clinic" varchar(100) [not null]
+  "queue_myQueue" varchar(10) [not null]
+  "queue_beforeAllInClinicQueue" varchar(10) [not null]
+  "queue_beforeInRoomClinicQueue" varchar(10) [not null]
+  "queue_presentQueue" varchar(10) [not null]
+  "queue_updateTime" datetime [not null]
+  "queue_text_th" varchar(100) [not null]
+  "queue_text_en" varchar(100) [not null]
+  "queue_create_date" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  "queue_status" varchar(20) [not null, note: 'NEW=สร้างคิวใหม่ , SPECIFY_ROOM=ระบุห้องตรวจ , SOON =ใกล้จะถึงคิว , CHANGE_ROOM=มีการย้ายห้องตรวจ , CHANGE_CLINIC=มีการส่งต่อไปคลินิคอื่น , HOLD=ถึงคิวแล้วไม่มา , CLOSE=สิ้นสุดคิว, QUERY=กรณีที่เป็นการตอบกลับการQuery , FIRST=ถึงคิว']
+  "queue_active" varchar(10) [not null, note: 'ACTIVE,INACTIVE']
+  "SPECIFY_ROOM" int(11) [not null, note: '0= ยังไม่ระบุห้อง,1=  ระบุห้อง,']
+  "queue_noti" int(2) [not null, note: '0=ยังไม่ส่ง,1=ส่งไปแล้ว']
+  "hospital_code" varchar(50) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  hospital_code [name: "pd_id"]
+}
+}
+
+Table "phya2_queue_clinic" {
+  "ID" int(11) [pk, not null, increment]
+  "ID_code" int(11) [not null]
+  "Clinic_Name" varchar(100) [not null]
+  "Location" varchar(100) [not null]
+  "Type" varchar(100) [not null]
+  "Note" text [not null]
+  "Status" int(11) [not null, note: '0=Disable,1=Enable ']
+  "queueRoom_status" int(2) [not null, note: '0=ไม่หารห้อง,1=หารห้อง']
+  "Room_manage" int(11) [not null]
+  "Forward" varchar(100) [not null]
+  "Transaction" text [not null]
+  "name_img" varchar(100) [not null]
+  "org" varchar(100) [not null]
+  "size640" varchar(100) [not null]
+  "size800" varchar(100) [not null]
+  "detail_th" text [not null]
+  "detail_en" text [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_queue_clinic_room" {
+  "Clinic_room_id" int(11) [pk, not null, increment]
+  "Clinic_id" int(11) [not null]
+  "day" int(11) [not null, note: '0=sunday , 1=monday , 2=tuesday , 3 = wenday ,4=thurday, 5 = friday, 6=saturday']
+  "room" int(11) [not null]
+}
+
+Table "phya2_status_q" {
+  "q_id" int(11) [pk, not null, increment]
+  "q_name" varchar(255) [default: NULL]
+  "q_name_en" varchar(255) [not null]
+  "q_condition" varchar(255) [default: NULL]
+  "q_param1" varchar(255) [default: NULL]
+  "q_param2" varchar(255) [default: NULL]
+  "q_detail" varchar(255) [default: NULL]
+  "q_detail_en" varchar(255) [not null]
+  "q_color" varchar(10) [default: NULL]
+  "q_icon" varchar(255) [default: NULL]
+  "q_icon_status" varchar(255) [default: NULL]
+  "q_create_by" int(11) [default: NULL]
+  "q_create_date" datetime [default: NULL]
+  "q_edit_by" int(11) [default: NULL]
+  "q_edit_date" datetime [default: NULL]
+  "q_status" int(9) [not null, note: '1=ใช้งาน,2=ไม่ใช้งาน']
+}
+
+Table "phya2_termsofuse" {
+  "terms_id" int(11) [pk, not null, increment]
+  "terms_detail" text
+  "terms_detail_en" text
+  "type_term" int(1) [not null, default: "0", note: '1 : เงื่อนไขการใช้งาน,2:เงื่อนไขการดูผลตรวจ,3 : ข้อความ About Us , 4 : คู่มือการใช้งานโปรแกรม']
+  "terms_edit_by" int(11) [default: NULL]
+  "terms_edit_date" datetime [default: NULL]
+}
+
+Table "phya2_tmp_hn" {
+  "tmp_hn" int(11) [pk, not null, increment]
+  "member_hn" varchar(255) [not null]
+  "member_idc" varchar(50) [default: NULL, note: 'ID CARD']
+  "member_sex" int(11) [default: "1", note: '1=men,2=women']
+  "member_birthday" date [default: NULL]
+  "title_name" varchar(255) [default: NULL]
+  "member_fname" varchar(255) [default: NULL]
+  "member_lname" varchar(255) [default: NULL]
+  "member_cid" int(50) [default: NULL]
+  "IntEngName" varchar(255) [default: NULL]
+  "EngFirstName" varchar(255) [default: NULL]
+  "EngLastName" varchar(255) [default: NULL]
+  "status" int(1) [not null, default: "0", note: '0:inactive ,1:active']
+  "create_date" datetime [not null, default: `CURRENT_TIMESTAMP`]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  member_hn [unique, name: "member_hn"]
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_tmp_idc" {
+  "tmp_idc" int(11) [pk, not null, increment]
+  "member_idc" varchar(50) [default: NULL, note: 'ID CARD']
+  "member_sex" int(11) [default: "1", note: '1=men,2=women']
+  "member_birthday" date [default: NULL]
+  "title_name" varchar(255) [default: NULL]
+  "member_fname" varchar(255) [default: NULL]
+  "member_lname" varchar(255) [default: NULL]
+  "member_cid" int(50) [default: NULL]
+  "IntEngName" varchar(255) [default: NULL]
+  "EngFirstName" varchar(255) [default: NULL]
+  "EngLastName" varchar(255) [default: NULL]
+  "status" int(1) [not null, default: "0", note: '0:inactive ,1:active']
+  "create_date" datetime [not null, default: `CURRENT_TIMESTAMP`]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_updateLeap" {
+  "updateLeap_id" int(11) [pk, not null, increment]
+  "member_id" int(11) [not null]
+  "updateLeap_Cal_Date" datetime [not null]
+  "updateLeap_Walk_Date" datetime [not null]
+  "updateLeap_Bpm_Date" datetime [not null]
+  "updateLeap_Sleep_Date" datetime [not null]
+}
+
+Table "phya2_user" {
+  "user_id" int(11) [not null, increment]
+  "user_token" varchar(255) [not null]
+  "user_username" varchar(255) [not null]
+  "user_password" varchar(255) [not null]
+  "user_name" varchar(255) [default: NULL]
+  "user_phone" varchar(255) [default: NULL]
+  "user_email" varchar(255) [default: NULL]
+  "user_id_real" varchar(255) [default: NULL]
+  "user_status" int(1) [not null, note: '1=ใช้งาน,2=ไม่ใช้งาน']
+  "user_update_by" int(9) [not null]
+  "user_update_time" datetime [not null]
+  "user_create_by" int(11) [default: NULL]
+  "user_create_date" datetime [default: NULL]
+  "group_id" int(11) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  group_id [name: "fk_User_Group1_idx"]
+  pb_id [name: "pd_id"]
+  (user_id, group_id) [pk]
+}
+}
+
+Table "phya2_user_pin" {
+  "userPin_id" int(11) [pk, not null, increment]
+  "userPin_username" varchar(255) [not null]
+  "userPin_userId" varchar(255) [not null]
+  "userPin_token" varchar(255) [not null]
+  "userPin_session" varchar(255) [not null]
+  "userPin_code" varchar(255) [not null]
+  "userPin_dateTime" datetime [not null]
+  "userPin_status" tinyint(2) [not null, note: '0=no active,1=active	']
+  "userPin_typeWs" tinyint(2) [not null, note: '1=login,2=facebook']
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "phya2_vital_main" {
+  "vital_id" int(11) [pk, not null, increment]
+  "vital_name" varchar(255) [not null]
+}
+
+Table "phya2_vital_sub" {
+  "vitals_id" int(9) [pk, not null, increment]
+  "vitals_code" varchar(50) [not null]
+  "vitals_name_th" varchar(255) [not null]
+  "vitals_name_en" varchar(255) [not null]
+  "vitals_description_th" text [not null]
+  "vitals_description_en" text [not null]
+  "vitals_normal_range" varchar(100) [not null]
+  "vitals_unit_th" varchar(100) [not null]
+  "vitals_unit_en" varchar(255) [not null]
+  "vitals_sort" int(9) [not null]
+  "vitals_update_by" int(9) [not null]
+  "vitals_update_time" datetime [not null]
+  "vital_id" int(9) [not null]
+  "pb_id" int(11) [default: "2"]
+  "vital_status" int(11) [not null, note: '1=มีรายละเอียด,2=ไม่มีรายละเอียด']
+  "vital_status_graph" int(11) [not null, note: '0=ไม่ได้ใช้,1=มีกราฟ,2=ไม่มีกราฟ']
+
+Indexes {
+  vital_id [name: "vital_id"]
+  vital_id [name: "vital_id_2"]
+}
+}
+
+Table "phya_branch" {
+  "pb_id" int(11) [pk, not null, increment]
+  "pb_name" varchar(255) [not null]
+  "pb_name_en" varchar(255) [not null]
+  "Branch" varchar(255) [default: NULL, note: 'ex : PYT2']
+  "status" int(11) [not null, default: "0", note: '0 :inactive , 1 ;active']
+  "admin_only" int(1) [default: "0"]
+  "create_date" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  "update_date" timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table "tb_user" {
+  "id" int(11) [pk, not null, increment]
+  "name" varchar(100) [not null]
+  "email" varchar(100) [not null]
+  "username" varchar(50) [not null]
+  "password" varchar(20) [not null]
+  "pb_id" int(11) [default: NULL, note: 'id โรงพยาบาล']
+
+Indexes {
+  email [unique, name: "email"]
+  username [unique, name: "username"]
+  pb_id [name: "pd_id"]
+}
+}
+
+Table "test_api" {
+  "user_id" int(10) [pk, not null, increment]
+  "user_firstname" varchar(30) [not null]
+  "user_lastname" varchar(30) [not null]
+  "user_email" varchar(50) [not null]
+  "user_password" text [not null]
+  "regis_time" timestamp [not null]
+}
+
+Table "test_base" {
+  "id" int(11) [pk, not null, increment]
+  "name" text [not null]
+
+Indexes {
+  id [name: "id"]
+  id [name: "id_2"]
+  id [name: "id_3"]
+  id [name: "id_4"]
+  id [name: "id_5"]
+}
+}
+
+Table "test_product" {
+  "id" int(11) [pk, not null, increment]
+  "pd_name" varchar(50) [not null]
+
+Indexes {
+  pd_name [unique, name: "pd_name"]
+}
+}
+
+
+Ref: "phya_branch"."pb_id" < "tb_user"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_queue_clinic"."pb_id"
+
+
+Ref: "phya2_user_pin"."pb_id" < "phya_branch"."pb_id"
+
+Ref: "phya2_user"."pb_id" < "phya_branch"."pb_id"
+
+Ref: "phya2_noti"."pb_id" < "phya_branch"."pb_id"
+
+Ref: "phya2_question"."question_id" < "phya2_question_answer"."question_id"
+
+Ref: "phya2_member_hn"."pb_id" < "phya_branch"."pb_id"
+
+Ref: "phya2_member"."member_id" < "phya2_member_hn"."member_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_contact"."pb_id"
+
+Ref: "phya2_member"."member_id" < "phya2_member_checkupfile"."member_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_member_checkupfile"."pb_id"
+
+Ref: "phya2_member"."member_id" < "phya2_member_log"."member_id"
+
+Ref: "phya2_province"."prov_id" < "phya2_member"."prov_id"
+
+Ref: "phya2_province"."prov_id" < "phya2_member_log"."prov_id"
+
+Ref: "phya2_province"."prov_id" < "phya2_amphur"."prov_id"
+
+Ref: "phya2_amphur"."amphur_id" < "phya2_district"."amphur_id"
+
+Ref: "phya2_district"."dist_id" < "phya2_member"."dist_id"
+
+Ref: "phya2_amphur"."amphur_id" < "phya2_member"."amphr_id"
+
+Ref: "phya2_amphur"."amphur_id" < "phya2_member_log"."amphr_id"
+
+Ref: "phya2_district"."dist_id" < "phya2_member_log"."dist_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_tmp_hn"."pb_id"
+
+
+Ref: "phya2_member"."member_id" < "phya2_otp"."member_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_vital_sub"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_package"."pb_id"
+
+Ref: "phya2_member"."member_id" < "phya2_memForm"."member_id"
+
+Ref: "phya2_member"."member_id" < "phya2_updateLeap"."member_id"
+
+Ref: "phya2_district"."dist_id" < "phya2_postcode"."dist_id"
+
+Ref: "phya2_postcode"."postcode_id" < "phya2_member"."postcode_id"
+
+Ref: "phya2_postcode"."postcode_id" < "phya2_member_log"."postcode_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_postcode"."pb_id"
+
+Ref: "phya2_member"."member_id" < "phya2_payment"."member_id"
+
+Ref: "phya2_package"."id_package" < "phya2_payment"."package_id"
+
+Ref: "phya2_memForm"."memform_id" < "phya2_payment"."memform_id"
+
+Ref: "phya2_member"."member_id" < "phya2_package_company_save"."member_id"
+
+Ref: "phya2_memForm"."memform_id" < "phya2_memForm_HealthResultsSelf"."memform_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_page"."pb_id"
+
+Ref: "phya2_group"."group_id" < "phya2_group_per_clinic"."group_id"
+
+Ref: "phya2_group"."group_id" < "phya2_group_permission"."group_id"
+
+Ref: "phya2_company"."company_id" < "phya2_company_member"."company_id"
+
+Ref: "phya2_company"."company_id" < "phya2_company_package"."company_id"
+
+Ref: "phya2_company"."company_id" < "phya2_booking"."company_id"
+
+
+Ref: "phya2_member"."member_id" < "leap_congenital_disease_phya2"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_blood_test"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_walk"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_blood_test"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_bpm"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_burn"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_calories"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_mile"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_bmi"."leap_member_id"
+
+Ref: "phya2_member"."member_id" < "leap_member_sleep"."leap_member_id"
+
+
+Ref: "doctor_profile"."DoctorID" < "doctor_note"."DoctorID"
+
+Ref: "doctor_profile"."DoctorID" < "doctor_work"."DoctorID"
+
+Ref: "doctor_profile"."DoctorID" < "doctor_list"."DoctorID"
+
+Ref: "doctor_profile"."DoctorID" < "doctor_study"."DoctorID"
+
+Ref: "phya_branch"."pb_id" < "phya2_booking_emergency"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_doctor_favorite"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_group_permission"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_group_per_clinic"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_group"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_booking"."pb_id"
+
+Ref: "phya_branch"."pb_id" < "phya2_tmp_idc"."pb_id"
+
+Ref: "phya2_memForm"."memform_id" < "phya2_memForm_medicineSelf"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "phya2_memForm_diseaseSelf"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "phya2_memForm_diseaseFamily"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "leap_member_target"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "doctor_note"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "leap_member_attr"."memform_id"
+
+Ref: "phya2_memForm"."memform_id" < "leap_member_eat"."memform_id"
+
+Ref: "doctor_clinic"."ClinicID" < "doctor_list"."ClinicID"
+
+Ref: "doctor_specialty"."SpecialtyID" < "doctor_list"."SpecialtyID"
+
+
+
+
+
+Ref: "phya_branch"."Branch" < "doctor_list"."Branch"
+
+Ref: "phya_branch"."Branch" < "doctor_clinic"."Branch"
+
+Ref: "leap_group_follow"."group_follow_id" < "phya2_memForm"."group_follow_id"
+
+Ref: "phya2_head_hint"."id" < "phya2_hint"."id_head_hint"
+
+Ref: "phya2_member"."member_id" < "phya2_device_regis"."member_id"
+
+Ref: "phya2_tmp_idc"."member_idc" < "phya2_tmp_hn"."member_idc"
+
+Ref: "phya2_member_hn"."member_hn" < "phya2_tmp_hn"."member_hn"
+
+Ref: "phya2_memForm_smoking"."smoking_id" < "phya2_memForm"."smoking_id"
+
+Ref: "phya2_package"."id_package" < "phya2_memForm_package"."mem_package_id"
+
+
+Ref: "phya2_package"."id" < "phya2_package_to_disease"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_to_family_disease"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_to_drink"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_attr_join"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_checkcode_join"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_company"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_to_smoke"."package_id"
+
+Ref: "phya2_package"."id" < "phya2_package_to_age"."package_id"
+
+
+
+Ref: "phya2_package_criteria"."criteria_id" < "phya2_package_to_age"."criteria_id"
+
+Ref: "phya2_question"."question_id" < "phya2_question_choices"."question_id"
+
+Ref: "phya2_question_choices"."choices_id" < "phya2_question_answer"."choices_id"
+
+Ref: "doctor_clinic"."RecID" < "phya2_clinic_call"."RecID"
+
+Ref: "doctor_clinic"."ClinicCode" > "phya2_booking"."cli_id"
+
+Ref: "doctor_clinic"."RecID" > "doctor_list"."ClinicID"
+
+Ref: "leap_member_target"."memberTarget_id" > "leap_member_target_other"."memberTarget_id"
+
+Ref: "phya2_doctor_favorite"."docf_id_real" > "doctor_list"."DoctorCode"
+
+Ref: "phya2_doctor_favorite"."member_id" > "phya2_member"."member_id"
+
+Ref: "phya2_food"."id" < "leap_member_eat"."food_id"
+
+Ref: "phya2_booking_emergency"."book_id" > "phya2_booking"."book_id"
+
+Ref: "phya2_category_health_articles"."ID" < "phya2_health_articles"."category_health_articles_id"
+
+Ref: "phya2_checklist"."checklist_id" < "phya2_checklist_sub"."checklist_id"
+
+Ref: "phya2_booking_date"."book_id" > "phya2_booking"."book_id"
+
+Ref: "phya2_doctors_exclude"."doc_id_code" > "doctor_list"."DoctorCode"
+
+Ref: "phya2_package_attr"."packageAttr_id" < "phya2_package_attr_join"."packageAttr_id"
+
+Ref: "phya2_status_q"."q_id" < "phya2_booking_date"."q_id"
+
+Ref: "phya2_memForm_diseaseSelf"."disease_id" < "phya2_memForm_disease"."disease_id"
+
+Ref: "phya2_package_company_save"."companyMember_id" > "phya2_company_member"."companyMember_id"
+
+Ref: "phya2_question_answer"."member_id" > "phya2_member"."member_id"
+
+Ref: "phya2_user"."group_id" > "phya2_group"."group_id"
+
+Ref: "phya2_page"."page_id" < "phya2_group_permission"."page_id"
+
+Ref: "phya2_head_page"."head_id" > "phya2_page"."head_id"
+
+
+Ref: "phya2_queue"."queue_hn" > "phya2_member_hn"."member_hn"
+
+Ref: "phya2_queue_clinic"."ID" < "phya2_noti"."queue_clinic_id"
+
+Ref: "phya2_queue_clinic"."ID" < "phya2_queue_clinic_room"."Clinic_id"
+
+Ref: "phya2_noti"."member_hn" > "phya2_member_hn"."member_hn"
+
+Ref: "phya2_vital_main"."vital_id" < "phya2_vital_sub"."vital_id"
+
+Ref: "phya2_question_answer"."bookings_id" > "phya2_booking"."book_id"
+Ref: "phya2_question_Physical_Therapist"."bookings_id" > "phya2_booking"."book_id"
+Ref: "phya2_question_Physical_Therapist_sub"."bookings_id" > "phya2_booking"."book_id"
